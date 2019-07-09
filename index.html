@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<div id='app'>
+		<input type="text" v-modal='message.a'>
+		<div>{{message.a}}, {{message.b}}</div>
+		<ul><li>duo rui mi</li></ul>
+		{{message.a}}
+	</div>
+</body>
+<script type="text/javascript" src='Observer.js'></script>
+<script type="text/javascript" src='Compile.js'></script>
+<script type="text/javascript" src='MVVM.JS'></script>
+<script type="text/javascript">
+	var vm = new MVVM({
+		el:'#app',
+		data:{
+			message:{a:'hello',b:'world'}
+		}
+	})
+</script>
+</html>
