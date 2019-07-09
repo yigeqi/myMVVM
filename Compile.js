@@ -65,15 +65,32 @@ let CompileUtil={
 			return p[c]
 		},vm.$data)
 	},
+	setVal(vm,expr,val){
+		expr.split('.').reduce((p,c,index,arr)=>{
+			if(index==arr.length-1){
+				p[c]=val
+			}
+			return p[c]
+		},vm.$data)
+	},
 	// 除了支持v-modal指令外，可以在这里增加其他的指令
 	modal(node,expr,vm){
 		let fn=this.updater.modalUpdater
+		new Watcher(vm,expr,newVal=>{
+			fn&&fn(node,newVal)
+		})
+		node.addEventListener('input',e=>{
+			this.setVal(vm,expr,e.target.value)
+		})
 		fn&&fn(node,this.getVal(expr,vm))
 	},
 	text(node,text,vm){
 		let fn=this.updater.textUpdater
 		let val=text.replace(/\{\{([^}]+)\}\}/g,(text,expr)=>{
 			//console.log(expr) //利用带分组的正则的replace方法可以把text中的{{}}全部替换掉，详细见.replace用法
+			new Watcher(vm,expr,newVal=>{
+				fn&&fn(node,newVal)
+			})
 			return this.getVal(expr,vm)
 		})
 		fn&&fn(node,val)

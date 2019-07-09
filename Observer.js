@@ -14,14 +14,17 @@ class Observer{
     }
     defineReactive(obj,key,val){
         let that = this
+        let dep = new Dep()
         Object.defineProperty(obj,key,{
             set(newVal){
               if(newVal!==val){
                     that.observe(newVal)  //用于赋新值也要observer，如message={c:...}
                     val=newVal
+                    dep.notify()
               }  
             },
             get(){
+                Dep.target&&dep.addSub(Dep.target)
                 return val
             }
         })
